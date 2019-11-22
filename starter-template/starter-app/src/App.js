@@ -11,8 +11,12 @@ import { ethers as eth } from 'ethers';
 import {
   Button,
   Grid,
-  Typography
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton
 } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 const settings = {
   dev: {
@@ -129,61 +133,80 @@ class App extends Component {
     if (!this.state.arcIsInitialized) return (<div> Loading </div>)
     return (
       <div className="App">
-        <header className="App-header">
-          DAO: {this.state.dao.id}
-          <hr />
-          Proposals
-          <hr />
-          <div>
-            <Grid container>
+
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton edge="start"  color="inherit" aria-label="menu">
+            </IconButton>
+            <Typography variant="h6" >
+              CrowdSurance
+            </Typography>
+            <Button color="inherit">| About us |</Button>
+            <Button color="inherit">How it works? |</Button>
+
+          </Toolbar>
+          </AppBar>
+
+          <Grid container spacing={1} style={{padding:"30px",height:"10px",fontWeight:"bold"}} >
+            <Grid container item xs={12}style={{marginBottom: "23px",color:"blue",fontWeight:"bold"}} >
+              CrowdSurance DAO Address: {this.state.dao.id}
+
+            </Grid>
+            <Grid container item xs={6} spacing={3} style={{border: '4px solid black',height:"314 x",width:"500",marginRight:"34px"}}>
+              <Grid xs={12} style={{color:"blue",fontWeight:"bold",fontSize:"15px"}}>
+                Claims Dashboard
+              </Grid>
+              <Grid container style={{color:"blue",fontWeight:"bold",fontSize:"15px",padding:"4px"}}>
               {
                 this.state.proposals.map( (proposal) => {
                   return (
-                    <Grid container>
-                      <Grid item xs={7}>
-                        <Typography variant="body1">
-                          {proposal.id}
+                    <Grid container style={{border: '1px solid black'}}  >
+                      <Grid xs={12} style={{color:"blue",fontWeight:"bold",fontSize:"15px"}}>
+                        <Typography variant="body1" style={{align:"center",color:"blue",fontWeight:"bold",fontSize:"15px"}}>
+                        Claim Id:{proposal.id}
                         </Typography>
                       </Grid>
-                      <Grid item xs={1}>
+                      
+                      <Grid item xs={2}>
                         <Typography variant="body1">
-                          <Button color="primary" onClick={() => { proposal.vote(IProposalOutcome.Pass).send() } }>
+                          <Button color="primary" style={{border: '1px solid black'}} onClick={() => { proposal.vote(IProposalOutcome.Pass).send() } }>
                             Vote up
                           </Button>
                         </Typography>
                       </Grid>
-                      <Grid item xs={1}>
+                      <Grid item xs={2}>
                         <Typography variant="body1">
-                          <Button color="primary" onClick={() => { proposal.vote(IProposalOutcome.Fail).send() } }>
+                          <Button color="primary" style={{border: '1px solid black'}} onClick={() => { proposal.vote(IProposalOutcome.Fail).send() } }>
                             Vote down
                           </Button>
                         </Typography>
                       </Grid>
-                      <Grid item xs={1}>
+                      <Grid item xs={2}>
                         <Typography variant="body1">
-                          <Button color="primary" onClick={() => this.handleStake(proposal, IProposalOutcome.Pass) }>
+                          <Button color="primary" style={{border: '1px solid black'}} onClick={() => this.handleStake(proposal, IProposalOutcome.Pass) }>
                             Stake up
                           </Button>
                         </Typography>
                       </Grid>
-                      <Grid item xs={1}>
+                      <Grid item xs={2}>
                         <Typography variant="body1">
-                          <Button color="primary" onClick={() => this.handleStake(proposal, IProposalOutcome.Fail)}>
+                          <Button color="primary" style={{border: '1px solid black'}} onClick={() => this.handleStake(proposal, IProposalOutcome.Fail)}>
                             Stake down
                           </Button>
                         </Typography>
                       </Grid>
-                      <Grid item xs={1}>
-                        <input
+                      <Grid item xs={4}>
+                        <TextField
                           type="text"
-                          value={this.state.stakeAmount}
+                          placeholder="Staked Amount"
+                          color="primary"
                           onChange={(event) => this.setState({stakeAmount: event.target.value})}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <Typography variant="body1">
-                          <Button color="primary" onClick={() => this.handleRedeem(proposal) }>
-                            ClaimReward
+                          <Button color="primary" style={{border: '1px solid black'}} onClick={() => this.handleRedeem(proposal) }>
+                            Claim Reward
                           </Button>
                         </Typography>
                       </Grid>
@@ -191,35 +214,44 @@ class App extends Component {
                   )})
               }
               </Grid>
-          </div>
-          <div>
-            Create Proposal
-            <hr />
-            Title:
-            <input type="text" value={this.state.proposalCreateOptionsCR.title} name="title" onInput={this.handleChange}/>
-            <br />
-            Description:
-            <input type="text" value={this.state.proposalCreateOptionsCR.description} name="description" onInput={this.handleChange}/>
-            <br />
-            Url:
-            <input type="text" value={this.state.proposalCreateOptionsCR.url} name="url" onInput={this.handleChange}/>
-            <br />
-            Beneficiary:
-            <input type="text" value={this.state.proposalCreateOptionsCR.beneficiary} name="beneficiary" onInput={this.handleChange}/>
-            <br />
-            EthReward:
-            <input type="text" value={this.state.proposalCreateOptionsCR.ethReward} name="ethReward" onInput={this.handleChange}/>
-            <br />
-            ReputationReward:
-            <input type="text" value={this.state.proposalCreateOptionsCR.reputationReward} name="reputationReward" onInput={this.handleChange}/>
-            <br />
-            <button onClick={this.handleCreateProposal}>
-              Create Proposal
-            </button>
-            <hr />
-          </div>
-        </header>
-      </div>
+            </Grid>
+            <Grid container item xs={6} spacing={3} style={{border: '4px solid black',width:"500"}}>
+              <Grid container  component="span" m={1} style={{align:"center"}} >
+             
+           <div style={{align:"center",marginLeft:"30%",color:"blue",fontWeight:"bold"}} >
+            Claim Insurance
+            <br /><br />
+
+            Claim Subject      :
+            <TextField type="text" style={{marginLeft:"5px"}} placeholder={this.state.proposalCreateOptionsCR.title} name="title" onInput={this.handleChange}/>
+            <br /><br />
+            Description      :
+            <TextField type="text" placeholder={this.state.proposalCreateOptionsCR.description} name="description" onInput={this.handleChange}/>
+            <br /><br />
+            Proofs      :
+            <TextField type="text" placeholder={this.state.proposalCreateOptionsCR.url} name="url" onInput={this.handleChange}/>
+            <br /><br />
+            Beneficiary      :
+            <TextField type="text" placeholder={this.state.proposalCreateOptionsCR.beneficiary} name="beneficiary" onInput={this.handleChange}/>
+            <br /><br />
+            EthReward      :
+            <TextField type="text" placeholder={this.state.proposalCreateOptionsCR.ethReward} name="ethReward" onInput={this.handleChange}/>
+            <br /><br />
+            ReputationReward      :
+            <TextField type="text" placeholder={this.state.proposalCreateOptionsCR.reputationReward} name="reputationReward" onInput={this.handleChange}/>
+            <br /><br />
+            <Typography variant="body1">
+              <Button  color="primary" style={{border: '1px solid black'}} onClick={this.handleCreateProposal}>
+                Claim
+              </Button>
+            </Typography>
+
+           </div>
+
+         </Grid>
+            </Grid>
+          </Grid>
+       </div>
     )}
   }
 
